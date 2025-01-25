@@ -122,38 +122,52 @@
     <div id="stotra"></div>
 
     <script>
-        function displayStotra() {
-            let stotraText = [
-               "ಶ್ರೀ ರಾಮ", "ರಾಮ", "ರಾಮೇತಿ,",
-             "ರಮೇ", "ರಾಮೇ","ಮನೋರಮೇ|","                                                        ",
-                "ಸಹಸ್ರನಾಮ", "ತತ್ತುಲ್ಯಂ,",
-                "ರಾಮನಾಮ", "ವರಾನನೇ|"
-            ];
-            let i = 0;
-            let stotraDiv = document.getElementById("stotra");
+       function displayStotra() {
+    let stotraText = [
+        "ಶ್ರೀ ರಾಮ", "ರಾಮ", "ರಾಮೇತಿ,",
+        "ರಮೇ", "ರಾಮೇ","ಮನೋರಮೇ|",
+        "<br>", // Line break inserted here
+        "ಸಹಸ್ರನಾಮ", "ತತ್ತುಲ್ಯಂ,",
+        // Another line break to force "ರಾಮನಾಮ" to the next line
+        "ರಾಮನಾಮ", "ವರಾನನೇ|"
+    ];
+    let i = 0;
+    let stotraDiv = document.getElementById("stotra");
 
-            function stepwiseDisplay() {
-    const totalWords = stotraText.length;
-    const totalDuration = 13000; // 10 seconds in milliseconds
-    const wordDelay = totalDuration / (totalWords + Math.floor(totalWords / 2)); // Total delay adjusted for a 2-word gap
+    function stepwiseDisplay() {
+        const totalWords = stotraText.length;
+        const totalDuration = 13000; // 13 seconds in milliseconds
+        const wordDelay = totalDuration / (totalWords + Math.floor(totalWords / 2)); // Total delay adjusted for a 2-word gap
 
-    if (i < stotraText.length) {
-        let wordSpan = document.createElement('span');
-        wordSpan.classList.add('stotra-word');
-        wordSpan.textContent = stotraText[i] + " ";
-        stotraDiv.appendChild(wordSpan);
-        setTimeout(() => {
-            wordSpan.style.opacity = 1;
-        }, 10); // Minimal delay before showing word
-        i++;
+        if (i < stotraText.length) {
+            let wordSpan = document.createElement('span');
+            
+            // Check for a line break
+            if (stotraText[i] === "<br>") {
+                let lineBreak = document.createElement('br');
+                stotraDiv.appendChild(lineBreak); // Add line break to the div
+                i++; // Skip over the line break element in the array
+            }
 
-        setTimeout(stepwiseDisplay, wordDelay); // Adjusted delay for next word with two-word gap
-    } else {
-        setTimeout(() => {
-            window.location.href = 'https://www.srtchokkadi.org/'; // Redirect to temple site URL
-        }, 500); // Reduced wait time before redirecting to 300ms
+            // Otherwise, display the word
+            if (i < stotraText.length) {
+                wordSpan.classList.add('stotra-word');
+                wordSpan.textContent = stotraText[i] + " ";
+                stotraDiv.appendChild(wordSpan);
+                setTimeout(() => {
+                    wordSpan.style.opacity = 1;
+                }, 10); // Minimal delay before showing word
+                i++;
+            }
+
+            setTimeout(stepwiseDisplay, wordDelay); // Adjusted delay for next word with two-word gap
+        } else {
+            setTimeout(() => {
+                window.location.href = 'https://www.srtchokkadi.org/'; // Redirect to temple site URL
+            }, 500); // Reduced wait time before redirecting to 500ms
+        }
     }
-}
+
 
             stepwiseDisplay();
         }
