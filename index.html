@@ -133,23 +133,27 @@
             let stotraDiv = document.getElementById("stotra");
 
             function stepwiseDisplay() {
-                if (i < stotraText.length) {
-                    let wordSpan = document.createElement('span');
-                    wordSpan.classList.add('stotra-word');
-                    wordSpan.textContent = stotraText[i] + " ";
-                    stotraDiv.appendChild(wordSpan);
-                    setTimeout(() => {
-                        wordSpan.style.opacity = 1;
-                    }, 100); // Slight delay before showing word
-                    i++;
-                    setTimeout(stepwiseDisplay, 1000); // Delay of 1 second between each word
-                } else {
-                    setTimeout(() => {
-                        //window.open('https://srtchokkadi.vercel.app/', '_blank'); 
-                        window.location.href = 'https://srtchokkadi.vercel.app/'; // Replace with actual temple site URL
-                    }, 1000); // Wait a moment before redirecting
-                }
-            }
+    const totalWords = stotraText.length;
+    const totalDuration = 13000; // 10 seconds in milliseconds
+    const wordDelay = totalDuration / (totalWords + Math.floor(totalWords / 2)); // Total delay adjusted for a 2-word gap
+
+    if (i < stotraText.length) {
+        let wordSpan = document.createElement('span');
+        wordSpan.classList.add('stotra-word');
+        wordSpan.textContent = stotraText[i] + " ";
+        stotraDiv.appendChild(wordSpan);
+        setTimeout(() => {
+            wordSpan.style.opacity = 1;
+        }, 10); // Minimal delay before showing word
+        i++;
+
+        setTimeout(stepwiseDisplay, wordDelay); // Adjusted delay for next word with two-word gap
+    } else {
+        setTimeout(() => {
+            window.location.href = 'https://srtchokkadi.vercel.app/'; // Redirect to temple site URL
+        }, 500); // Reduced wait time before redirecting to 300ms
+    }
+}
 
             stepwiseDisplay();
         }
